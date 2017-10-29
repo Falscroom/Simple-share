@@ -34,6 +34,7 @@ class simple_share {
         foreach ($icons as $key => $icon_color) {
             $this->icons[$key][0] = $this->path . $icon_color[0];
             $this->icons[$key][1] = $icon_color[1];
+	        $this->icons[$key][2] = $icon_color[2];
         }
     }
     function create_buttons() {
@@ -42,7 +43,7 @@ class simple_share {
             $current_post_title = get_the_title();
             $current_post_excerpt = get_the_excerpt();
             $current_post_image = get_the_post_thumbnail_url(null,'large');
-            $this->result .= "<button onclick= \"Share.vkontakte('{$current_post_link}','{$current_post_title}','{$current_post_excerpt}','{$current_post_image}') \" class=\"mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored simple-share\" 
+            $this->result .= "<button onclick= \"Share.{$icon_color[2]}('{$current_post_link}','{$current_post_title}','{$current_post_excerpt}','{$current_post_image}') \" class=\"mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored simple-share\" 
             style='background-image: url({$icon_color[0]}); background-color: {$icon_color[1]}'> </button>";
         }
         return $this->result;
@@ -50,7 +51,7 @@ class simple_share {
 }
 
 function init($args) {
-	$share_class = new simple_share([['vk-social-network-logo.png','#507299'],['facebook.png','#3b5998']]);
+	$share_class = new simple_share([['vk-social-network-logo.png','#507299','vkontakte'],['facebook.png','#3b5998','facebook']]);
     return $share_class->create_buttons();
 }
 add_shortcode('share-buttons','init');
