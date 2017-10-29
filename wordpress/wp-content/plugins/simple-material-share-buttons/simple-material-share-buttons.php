@@ -26,34 +26,10 @@ class simple_share {
     private $path,$icons,$result;
     function __construct($icons)
     {
-        $this->result .= "
-        <style>
-            .post > .entry-content > .simple-share,.post > .entry-content > p > .simple-share {
-                background-position: center; !important;
-                background-repeat: no-repeat; !important;
-                margin-right: 10px;
-            }
-            .post > .entry-content > .simple-share {
-                margin-bottom: 10px;
-            }
-        </style>
-        <script>
-                        Share = {
-                    vkontakte: function(purl,ptitle,text,pimg) {
-                        url  = 'http://vkontakte.ru/share.php?';
-                        url += 'url='          + encodeURIComponent(purl);
-                        url += '&title='       + encodeURIComponent(ptitle);
-                        url += '&description=' + encodeURIComponent(text);
-                        url += '&image='       + encodeURIComponent(pimg);
-                        url += '&noparse=true';
-                        Share.popup(url);
-                    },            
-                    popup: function(url) {
-                        window.open(url,'','toolbar=0,status=0,width=626,height=436');
-                    }
-                };
-        </script>
-        ";
+
+	    wp_enqueue_script( 'share-script', plugin_dir_url(__FILE__ ) . '/js/share-script.js');
+	    wp_enqueue_style( 'share-style', plugin_dir_url(__FILE__ ) . '/css/main.css');
+
         $this->path = plugin_dir_url( __FILE__ ) . 'icons/';
         foreach ($icons as $key => $icon_color) {
             $this->icons[$key][0] = $this->path . $icon_color[0];
@@ -65,7 +41,7 @@ class simple_share {
             $current_post_link = get_permalink();
             $current_post_title = get_the_title();
             $current_post_excerpt = get_the_excerpt();
-            $current_post_image = get_the_post_thumbnail_url(null,'thumbnail');
+            $current_post_image = get_the_post_thumbnail_url(null,'large');
             $this->result .= "<button onclick= \"Share.vkontakte('{$current_post_link}','{$current_post_title}','{$current_post_excerpt}','{$current_post_image}') \" class=\"mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored simple-share\" 
             style='background-image: url({$icon_color[0]}); background-color: {$icon_color[1]}'> </button>";
         }
@@ -74,8 +50,7 @@ class simple_share {
 }
 
 function init($args) {
-    var_dump(get_the_post_thumbnail_url(null,'medium'));
-    $share_class = new simple_share([['vk-social-network-logo.png','#507299'],['facebook.png','#3b5998']]);
+	$share_class = new simple_share([['vk-social-network-logo.png','#507299'],['facebook.png','#3b5998']]);
     return $share_class->create_buttons();
 }
 add_shortcode('share-buttons','init');

@@ -1,0 +1,8 @@
+.post > .entry-content > .simple-share,.post > .entry-content > p > .simple-share {
+    background-position: center; !important;
+    background-repeat: no-repeat; !important;
+    margin-right: 10px;
+}
+.post > .entry-content > .simple-share {
+    margin-bottom: 10px;
+}
